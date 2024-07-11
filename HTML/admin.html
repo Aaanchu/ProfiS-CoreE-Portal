@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfiS Core Portal</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-color: rgba(101, 127, 75, 0.403);
+            font-family: Arial, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            /* Blue color */
+            color: #ffffff;
+            /* White text */
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        .carousel {
+        position: relative;
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        overflow: hidden;
+        }
+
+        .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+        min-width: 100%;
+        transition: transform 0.5s ease;
+        }
+
+        .carousel-control {
+        position: absolute;
+        top: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: rgb(133, 128, 128);
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transform: translateY(-50%);
+        }
+
+        .carousel-control.prev {
+        left: 0;
+        }
+
+        .carousel-control.next {
+        right: 0;
+        }
+        #hero {
+            position: relative;
+            overflow: hidden;
+            background-color: rgb(255, 255, 255);
+        }
+        #hero img {
+            width: 20%;
+            height: 20%;
+            height: auto;
+            opacity: 0.8;
+        }
+        #hero .overlay {
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            color: rgb(229, 229, 229);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+        .navbar{
+            background-color: rgb(230, 230, 230);
+        }
+
+    </style>
+    
+    <script>
+                // carousel js part
+
+                let currentIndex = 0;
+
+function showSlide(index) {
+  const slides = document.querySelectorAll('.carousel-item');
+  const totalSlides = slides.length;
+
+  if (index >= totalSlides) {
+    currentIndex = 0;
+  } else if (index < 0) {
+    currentIndex = totalSlides - 1;
+  } else {
+    currentIndex = index;
+  }
+
+  const offset = -currentIndex * 100;
+  document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+}
+
+function nextSlide() {
+  showSlide(currentIndex + 1);
+}
+
+function prevSlide() {
+  showSlide(currentIndex - 1);
+}
+
+// Initialize the carousel
+showSlide(currentIndex);
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+  
+ 
+    </script>
+</head>
+<body>
+
+
+     
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light ">
+        <a class="navbar-brand" href="#">
+            <img src="./logo1.png" width="70" height="70" class="d-inline-block align-top" alt="Logo" border="50%">
+           
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#hero">Home</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        CRUD_Operation
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="student" href="/student.html">
+                            Student
+                        </a>
+                        <a class="dropdown-item" id="employee" href="/employee.html">
+                            Employee
+                        </a>  
+                    </div>
+                         
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/profile.html">View Profile</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+<header id="hero" class="jumbotron text-center">
+    <img src="./cdac.jpg" alt="CDAC Image">
+    <div class="overlay">
+        <!-- <h1 class="display-4">Welcome to Our Website</h1> -->
+    </div>
+</header>
+    
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfiS Core Portal</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-color: rgba(101, 127, 75, 0.403);
+            font-family: Arial, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            /* Blue color */
+            color: #ffffff;
+            /* White text */
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+         .navbar{
+            background-color: rgb(230, 230, 230);
+        }
+    </style>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+    <script>
+        //to submit form this function is called using ajax
+        function submitForm(){
+            var ajax=new XMLHttpRequest()
+            // variable name should match from serverside like rollNo
+            var data={
+                fullName:document.getElementById('fullName').value,
+                email:document.getElementById('email').value,
+                password:document.getElementById('password').value,
+                userType:document.getElementById('userType').value
+            }
+            // console.log(JSON.stringify(data));
+
+            // sending data in post method so data will pass using ajax.send()
+            ajax.open("POST",'/saveDataEmp',true)
+            ajax.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            ajax.send(JSON.stringify(data))
+            
+            
+            ajax.onreadystatechange=function(){
+                if(ajax.readyState==4){
+                    if(ajax.status==200){
+                    alert(ajax.responseText);
+                    document.getElementById('Form').reset();
+                    // document.getElementById('studentForm').style.display='none'
+                    }else{
+
+                        // console.error('Error:', ajax.responseText);
+
+                        alert('Data is not added. There is some Error.');
+                    }
+                }
+            }
+            
+          }
+
+    </script>
+</head>
+<body>
+
+
+     
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light ">
+        <a class="navbar-brand" href="#">
+            <img src="./logo1.png" width="70" height="70" class="d-inline-block align-top" alt="Logo" border="50%">
+           
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin.html">Home</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link"  href="/employee.html">
+                        EMPLOYEE_CRUD
+                    </a>
+                         
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <header id="hero" class="jumbotron text-center">
+        <h1 class="display-4">Welcome to Our Website</h1>
+        <p class="lead">We provide the best services for you.</p>
+        <a class="btn btn-custom btn-lg" href="#features" role="button" onclick="scrollToFeatures()">Learn More</a>
+    </header>
+
+    
+    <div   id="employeeForm" >
+            <form id="Form" >
+            <!-- use id instead of name in ajax -->
+            <pre>
+                fullName: <input type="text" id="fullName" placeholder="fullName" required/><br>
+    
+                email: <input type="email" id="email" placeholder="email" required/><br>
+    
+                password: <input type="text" id="password" placeholder="password" required/><br>
+
+                userType: <input type="text" id="userType" placeholder="userType" required/><br>
+
+                 <button type="button" onclick="submitForm()">SAVE</button>
+            </pre>
+        </form>
+     </div>
+
+    </div>
+    
+    <!-- Footer -->
+     <div class="footer1">
+    <footer id="footer" class="bg-light text-center py-5" height="500">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+    </div>
+
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfiS Core Portal</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-color: rgba(101, 127, 75, 0.403);
+            font-family: Arial, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            /* Blue color */
+            color: #ffffff;
+            /* White text */
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            /* Darker blue on hover */
+        }
+
+        .carousel {
+        position: relative;
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        overflow: hidden;
+        }
+
+        .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+        min-width: 100%;
+        transition: transform 0.5s ease;
+        }
+
+        .carousel-control {
+        position: absolute;
+        top: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transform: translateY(-50%);
+        }
+
+        .carousel-control.prev {
+        left: 0;
+        }
+
+        .carousel-control.next {
+        right: 0;
+        }
+        #hero {
+            position: relative;
+            overflow: hidden;
+            background-color: rgb(255, 255, 255);
+        }
+        #hero img {
+            width: 20%;
+            height: 20%;
+            height: auto;
+            opacity: 0.8;
+        }
+        #hero .overlay {
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            color: rgb(202, 199, 199);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+         .navbar{
+            background-color: rgb(230, 230, 230);
+        }
+
+
+    </style>
+    
+    <script>
+                // carousel js part
+
+                let currentIndex = 0;
+
+function nextSlide() {
+  showSlide(currentIndex + 1);
+}
+
+function prevSlide() {
+  showSlide(currentIndex - 1);
+}
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+    <script>
+      
+        //STUDENT to view database view button is directed to this function
+        function view() {
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", "/viewData", true);
+            ajax.send();
+            ajax.onreadystatechange = function() {
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    display(JSON.parse(ajax.responseText));
+                    document.getElementById("results").style.display='block';
+                }
+            }
+        }
+        function display(results){
+            let data = `<h3>This is the Json data</h3><hr/><table><tr><th>Roll no</th><th>Full Name</th><th>Email</th><th>Mobile No</th><th>Institute Name</th><th>Course Name</th><th>Passout Year</th><th>Stream</th><th>Association Type</th><th>ACTIONS:</th></tr>`;
+        results.forEach(results => {
+            data += `<tr>
+                <td>${results.rollNo}</td><td>${results.fullName}</td><td>${results.email}</td><td>${results.mobileNo}</td><td>${results.instituteName}</td><td>${results.courseName}</td><td>${results.passoutYear}</td><td>${results.stream}</td><td>${results.associationType}</td>
+                <td><button onclick='editData(${results.rollNo})'>EDIT_DATA</button><button onclick='deleteData(${results.rollNo})'>DELETE_DATA</button></td>
+            </tr>`;
+        });
+        data += `<tr><td colspan="10"><button onclick='closeView()'>CLOSE:</button></td></tr></table>`
+        console.log(data)
+        document.getElementById("results").innerHTML = data;
+        }
+        function closeView(){
+            document.getElementById('results').style.display='none';
+        }
+
+        // TO DELETE DATA FROM THE DATABASE
+        function deleteData(rollNo){
+            var ajax=new XMLHttpRequest()
+            ajax.open('POST','/deleteData',true)
+            ajax.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            ajax.send(JSON.stringify({rollNo})) 
+            ajax.onreadystatechange=function(){
+                // it is not calling why?
+                if(ajax.readyState==4){
+                    console.log('Ready state is 4');
+                    if(ajax.status==200){
+                        console.log('status is 200');
+                        // alert('DATA is deleted')
+                        alert(ajax.responseText);
+                        document.getElementById("results").style.display = 'none';
+                        view();
+                    }
+                    else{
+                        console.log('Status is not 200: ', ajax.status);
+                        alert('Data is not deleted. There is some Error.');
+                    }
+                }
+                
+            }
+        }
+ 
+        //to edit data : it will open form of selected id to edit or update values
+        function editData(rollNo){
+               var ajax=new XMLHttpRequest()
+               ajax.open('POST','/editData',true)
+               ajax.setRequestHeader('Content-Type','application/json;charset=UTF-8')
+               ajax.send(JSON.stringify({ rollNo}))
+               ajax.onreadystatechange=function(){
+                if(ajax.readyState==4){
+                    console.log('Ready state is 4');
+                    if(ajax.status==200){
+                        console.log('status is 200');
+                        //why using innerHtml
+                         display2(JSON.parse(ajax.responseText));
+                        //
+                        document.getElementById("result1").style.display = 'block';
+                    }
+                    else{
+                        console.log('Status is not 200: ', ajax.status);
+                        alert('Data is not updated. There is some Error.');
+                    }
+                }
+               }
+
+        }
+
+        function display2(result){
+            var data=` Update the data
+            
+            <table>
+            <tr>
+            <td>RollNo</td>
+            <td><input type="text" value="${result[0].rollNo}" id='rollNo' name="rollNo" required readonly></td></tr> 
+             <tr>
+            <td>NAME</td>
+            <td><input type="text" value="${result[0].fullName}" id='fullName' name="fullName" required></td></tr>
+             <tr>
+            <td>EMAIL</td>
+            <td><input type="email" value="${result[0].email}" id='email' name="email" required></td></tr>
+             <tr>
+            <td>MOBILE</td>
+            <td><input type="text" value="${result[0].mobileNo}" id='mobileNo' name="mobileNo" required></td></tr>
+             <tr>
+            <td>InstituteName</td>
+            <td><input type="text" value="${result[0].instituteName}" id='instituteName' name="instituteName" required></td></tr>
+             <tr>
+            <td>CourseName</td>
+            <td><input type="text" value="${result[0].courseName}" id='courseName' name="courseName" required></td></tr>
+             <tr>
+            <td>passoutYear</td>
+            <td><input type="text" value="${result[0].passoutYear}" id='passoutYear' name="passoutName" required></td></tr>
+             <tr>
+            <td>Stream</td>
+            <td><input type="text" value="${result[0].stream}" id='stream' name="stream" required></td></tr>
+             <tr>
+            <td>AssociationType</td>
+            <td><input type="text" value="${result[0].associationType}" id='associationType' name="associationType" required></td></tr>
+            <tr><td><input type ="submit" value="UPDATE" onclick='update()'></td></tr>
+            </table>
+           
+            `
+            document.getElementById("result1").innerHTML = data;
+        }
+
+        // to updated the selected id :
+        function update(){
+            // if (event) event.preventDefault();
+            var ajax=new XMLHttpRequest()
+            var data = {
+            rollNo: document.getElementById('rollNo').value,
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            mobileNo: document.getElementById('mobileNo').value,
+            instituteName: document.getElementById('instituteName').value,
+            courseName: document.getElementById('courseName').value,
+            passoutYear: document.getElementById('passoutYear').value,
+            stream: document.getElementById('stream').value,
+            associationType: document.getElementById('associationType').value
+             };
+            ajax.open('POST','/update',true)
+            ajax.setRequestHeader('Content-Type','application/json;charset=UTF-8')
+            ajax.send(JSON.stringify(data));
+            ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+               alert(ajax.responseText);
+            //    window.location.href = alldataurl;
+                // document.getElementById("studentForm").style.display = 'none';
+                document.getElementById("result1").style.display = 'none';
+                document.getElementById("results").style.display = 'none';
+                view();
+                //viewData2();
+            } else {
+                alert('Data is not updated. There is some Error.');
+            }
+            }
+        }
+    }
+          //function to search data
+// to sort a list of courses
+window.addEventListener("load", function streams() {
+                console.log('in the stream list function')
+                var ajax = new XMLHttpRequest();
+                ajax.open("get", "/searchStreamList", true)
+                // ajaxRequest.open("GET",“getData?id="+id,true);
+                ajax.send();
+                ajax.onreadystatechange = function()
+                {
+                if(ajax.readyState==4)
+                {
+                var select = document.getElementById("select");
+                select.innerHTML = `<option value="-1">select</option>` + ajax.responseText;
+                }
+                };
+            })
+
+                        // to sort a list of courses
+                window.addEventListener("load", function year() {
+                console.log('in the year list function')
+                var ajax = new XMLHttpRequest();
+                ajax.open("get", "/searchYearList", true)
+                // ajaxRequest.open("GET",“getData?id="+id,true);
+                ajax.send();
+                ajax.onreadystatechange = function()
+                {
+                if(ajax.readyState==4)
+                {
+                var select = document.getElementById("selectYear");
+                select.innerHTML = `<option value="-1">select</option>` + ajax.responseText;
+                }
+                };
+            })
+
+                       
+            // to search by criteria
+            function searchStream() {
+
+                var search = document.getElementById("select").value;
+                var search1 = document.getElementById("selectYear").value;
+                if (!search && !search1) {
+                    alert ("Select a criteria")
+                } else {
+                    var ajax = new XMLHttpRequest();
+                    ajax.open("POST", "/searchStream", true)
+                    ajax.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                    ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    console.log(display5(JSON.parse(ajax.responseText)))
+                    display5(JSON.parse(ajax.responseText)); // Assuming you have an element to display results
+                }
+                };
+    
+                ajax.send(JSON.stringify({value: search, value1: search1})); // Send the value as JSON
+
+                }}
+
+            function display5(results) {
+
+            let tableRows = `                <thead>
+                <tr>
+                    <th>Roll no</th><th>Full Name</th><th>Email</th><th>Mobile No</th><th>Institute Name</th><th>Course Name</th><th>Passout Year</th><th>Stream</th><th>Association Type</th>
+                </tr>
+            </thead>`
+            var generatedData = results.map(result => `
+            <tr>
+            <td>${result.rollNo}</td><td>${result.fullName}</td><td>${result.email}</td><td>${result.mobileNo}</td><td>${result.instituteName}</td><td>${result.courseName}</td><td>${result.passoutYear}</td><td>${result.stream}</td><td>${result.associationType}</td>
+            </tr>
+            `).join('');
+            tableRows += generatedData
+            console.log(tableRows)
+
+            document.getElementById("results_5").innerHTML = tableRows
+            }
+
+            //This function browse() allows a user to select a file via an HTML file input element (<input type="file">).
+            //When a file is selected, it reads its contents as an ArrayBuffer using FileReader, sends this content to the server via a POST request (XMLHttpRequest)
+
+            // to browse the function
+            function browse(){
+                var data = document.getElementById("data");
+                    if(data.files.length === 0) {
+                        alert("Select a file");
+                    } else {
+                        var file = data.files[0];
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                        var fileContent = event.target.result;
+
+                        var ajax = new XMLHttpRequest();
+                        ajax.open("POST", "/browseData", true);
+                        ajax.setRequestHeader('Content-Type', 'application/octet-stream');
+
+                        ajax.onreadystatechange = function () {
+                        if (ajax.readyState == 4 && ajax.status == 200) {
+                            var response = ajax.responseText;
+                            alert(response);
+                            }
+                       };
+
+                        ajax.send(fileContent); // Send the file content as binary data
+                        };
+
+                        reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
+                        }
+                    }
+
+            function upload() {
+                var show = document.getElementById("show")
+                show.style.display="block";
+            }
+            function filter() {
+                var div =document.getElementById("search_box");
+                div.style.display="block";
+            }
+ 
+    </script>
+</head>
+<body>
+
+
+     
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">
+            <img src="./logo1.png" width="70" height="70" class="d-inline-block align-top" alt="Logo" border="50%">
+           
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li>
+                          </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin.html">Home</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        STUDENT_CRUD
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="view" onclick="view()">
+                            View
+                        </a>
+                        <a class="dropdown-item" href="#" id="-btn" onclick="upload()">
+                            Upload
+                        </a>
+                        <a class="dropdown-item" id="add" href="/studentAdd.html">
+                            Add
+                        </a>
+                        <a class="dropdown-item" id="div" href="#" onclick="filter()">Filter</a>
+
+                        
+                    </div>
+                         
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+
+
+
+     <div id="show" style="display: none;">
+        <input type="file" accept="xlsx/xls" id="data"/>
+        <button id="browse" onclick="browse()">UPLOAD</button>
+   
+
+
+    </div>
+    
+    <!-- DIV FOR VIEW  -->
+    <div id="results" style="display:none;" ></div>
+  <!-- DIV FOR UPDATE FORM -->
+   <div id="result1" style="display: none;"></div>
+
+
+    <header id="hero" class="jumbotron text-center">
+        <img src="./cdac.jpg" alt="CDAC Image">
+        <div class="overlay">
+            <!-- <h1 class="display-4">Welcome to Our Website</h1> -->
+        </div>
+    </header>
+
+    
+    <!-- search box -->
+<!-- search box -->
+<div id="search_box" align="center" style="display: none;">
+    <div style="display: inline-block; margin-right: 10px;">STREAM: </div>
+    <select id="select" onchange="searchStream()" style="display: inline-block; margin-right: 10px;">
+
+    </select>
+    <div style="display: inline-block; margin-right: 10px;">PASSOUT YEAR: </div>
+    <select id="selectYear" onchange="searchStream()" style="display: inline-block;">
+
+    </select>
+</div>
+
+
+
+     <table id="results_5"></table>
+    <!-- Footer -->
+     <!-- <div class="footer1">
+    <footer id="footer" class="bg-light text-center py-5" height="500">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+    </div> -->
+
+</html>

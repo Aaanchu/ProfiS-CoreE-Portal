@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color:  rgba(101, 127, 75, 0.403);
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+           
+        }
+
+        .profile-header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: #ffffff;
+        }
+
+        .profile-header h2 {
+            margin-top: 15px;
+        }
+
+        .profile-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            /* box-shadow: 0 0 10px rgb(255, 255, 255); */
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+          .navbar{
+            background-color: rgb(230, 230, 230);
+        }
+        .navbar-nav .nav-link {
+            color: #000000 !important;
+        }
+       
+    </style>
+</head>
+
+<body>
+   
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">
+            <img src="./logo1.png" width="70" height="70" class="d-inline-block align-top" alt="Logo" border="50%">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin.html">Home</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="img1">
+            <h2>User Name</h2>
+        </div>
+        <div class="profile-section">
+            <h4>Profile Information</h4>
+            <br>
+            <form>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" value="user-name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="email-Id">
+                </div>
+                <!-- <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" value="phone-number">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" value="Bihar">
+                </div> -->
+            </form>
+        </div>
+        <div class="profile-section">
+            <h4>Change Password</h4>
+          <br>
+            <form>
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" class="form-control" id="currentPassword">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" class="form-control" id="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" class="form-control" id="confirmPassword">
+                </div>
+                <button type="submit" class="btn btn-custom">Update Password</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+
+</html>
