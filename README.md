@@ -92,3 +92,7 @@ and provides restricted view access to employees. This project was developed dur
 - 
 ## PROJECT_PPT
 - https://docs.google.com/presentation/d/1uBbRsnne9HhZ44ldMrEaTv5IdFwx9asD/edit?usp=sharing&ouid=114570277063036351952&rtpof=true&sd=true
+
+Please give rating ⭐ to the repository.
+
+☺️ "Thank You for visiting" ☺️
